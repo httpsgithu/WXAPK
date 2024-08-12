@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.twiceyuan.wxapk">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
 
     <application
-        android:name=".AppInstance"
         android:allowBackup="true"
-        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -16,8 +15,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="微信 APK 安装补丁"
-            android:exported="true">
+            android:exported="true"
+            android:label="微信 APK 安装补丁">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,8 +25,8 @@
 
         <activity
             android:name=".InstallerActivity"
-            android:label="安装 APK"
-            android:exported="true">
+            android:exported="true"
+            android:label="安装 APK">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -42,6 +41,21 @@
                 <data android:mimeType="application/apk.1.1.1.1.1" />
                 <data android:scheme="content" />
                 <data android:host="*" />
+            </intent-filter>
+            <intent-filter tools:targetApi="s">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="content" />
+                <data android:mimeType="application/octet-stream" />
+                <data android:host="*" />
+                <data android:pathSuffix=".apk.1" />
+                <data android:pathSuffix=".apk.1.1" />
+                <data android:pathSuffix=".apk.1.1.1" />
+                <data android:pathSuffix=".apk.1.1.1.1" />
+                <data android:pathSuffix=".apk.1.1.1.1.1" />
             </intent-filter>
         </activity>
 
@@ -64,10 +78,11 @@
             </intent-filter>
 
         </activity>
+        <activity android:name="com.twiceyuan.wxapk.FileBrowserActivity" />
 
         <provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="@string/file_provider_authority"
+            android:name=".AppFileProvider"
+            android:authorities="${applicationId}.AppFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
